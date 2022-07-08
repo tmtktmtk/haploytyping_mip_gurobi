@@ -1,0 +1,25 @@
+    # classify smaller clusters/outsiders with relaxed threshold
+    major_clsts = pd.DataFrame.from_dict({i:dataframe.loc[clst,:].mode().iloc[0] for i,clst in enumerate(rows_clsts) if len(clst)>=5}, columns= dataframe.columns.values, orient='index')
+    minor_clsts = pd.DataFrame.from_dict({i:dataframe.loc[clst,:].mode().iloc[0] for i,clst in enumerate(rows_clsts) if len(clst) <5}, columns= dataframe.columns.values, orient='index')
+    
+    if minor_clsts.size!=0:
+        ham_sim = 1 - pairwise_distances(minor_clsts,major_clsts, metric = "hamming")
+        ham_sim = pd.DataFrame(ham_sim, index=minor_clsts.index, columns=major_clsts.index)
+        print(ham_sim)
+        temp_clsts = {}
+        for clst_id in ham_sim.columns.values:
+            temp_clsts[clst_id] = rows_clsts[clst_id]
+        for mi,ma in ham_sim.idxmax(axis=1).to_dict().items():
+            if ham_sim.loc[mi,ma]>0.7:
+                temp_clsts[ma] = temp_clsts[ma] +rows_clsts[mi]
+            else:
+                temp_clsts[mi] = rows_clsts[mi]
+        rows_clsts = temp_clsts.values()
+    
+    # final similarity
+    df_mode = pd.DataFrame([dataframe.loc[clst,:].mode().iloc[0] for clst in rows_clsts], index = range(len(rows_clsts)), columns= dataframe.columns.values)
+    df_mode = df_mode.drop_duplicates()
+    # pairwise similarity between clusters
+    ham_sim = 1 - pairwise_distances(df_mode, metric = "hamming")
+    ham_sim = pd.DataFrame(ham_sim, index=df_mode.index, columns=df_mode.index)
+    print(ham_sim)
