@@ -642,6 +642,9 @@ if __name__ == '__main__':
         print('Quality:', evaluate(df,clst[0]))
     graph_result(df,clsts)
 
+    print('sanbox test')
+
+
     clsts = cplt_hierarchical_clstering(df, clsts_tpl, estimation=10)
     graph_result(df,clsts)
 
