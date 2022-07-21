@@ -24,3 +24,10 @@ if __name__ == '__main__':
     m,n,c = 100,100,
     df = gen(m,n,c)
     df.to_csv(f'data/artificial_data_{m}x{n}-{c}.csv')
+    # df = pd.DataFrame(np.zeros(shape = (200,1000), dtype = int))
+    # df.iloc[:60,250:500] = 1 #1
+    # df.iloc[60:140,:250] = 1 #2
+    # df.iloc[:,500:700] = 1 #3
+    # df.iloc[140:,700:] = 1 #4
+    # df = df.sample(frac=1).sample(frac=1,axis=1)
+    # df.to_csv(f'data/artificial_data_4_clusters_22-07_shuffled.csv')

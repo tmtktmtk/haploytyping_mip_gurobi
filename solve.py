@@ -511,6 +511,7 @@ def cplt_hierarchical_clstering(dataframe, clusters, estimation = 3):
         if closest_clst < 0.1:
             idx = hamming.index(closest_clst)
             result[idx] = (result[idx][0]+[r],result[idx][1])
+            print('Classified into cluster',idx)
 
     return result
 
@@ -606,7 +607,7 @@ if __name__ == '__main__':
     plt.rcParams.update({'font.size': 6})
 
     # solve
-    df = get_data('data/kmers_problem.csv')
+    df = get_data('data/artificial_data_4_clusters_22-07_shuffled.csv')
 
     # for i in range(3):
     #     df_ = get_data('data/problem_7.csv')
@@ -618,31 +619,31 @@ if __name__ == '__main__':
     plt.figure('original', figsize=(8, 8))
     sns.heatmap(df, cmap='binary', yticklabels=1, cbar=False)
 
-    # presolve
-    grid = sns.clustermap(df, cmap='binary', yticklabels=1, cbar=True, figsize=(
-        8, 8), metric='hamming', method='single')
-    reordered_rows = grid.dendrogram_row.reordered_ind
-    reordered_cols = grid.dendrogram_col.reordered_ind
-    df = df.iloc[reordered_rows, reordered_cols]
-    df = df.iloc[:,:df.shape[1]//4]
+    # # presolve
+    # grid = sns.clustermap(df, cmap='binary', yticklabels=1, cbar=True, figsize=(
+    #     8, 8), metric='hamming', method='single')
+    # reordered_rows = grid.dendrogram_row.reordered_ind
+    # reordered_cols = grid.dendrogram_col.reordered_ind
+    # df = df.iloc[reordered_rows, reordered_cols]
+    # df = df.iloc[:,:df.shape[1]:]
 
-    clsts_tpl = hybrid_full_solve(df,minRows = 5, minCols =15, errThreshold=0.1)
+    # clsts_tpl = hybrid_full_solve(df,minRows = 5, minCols =15, errThreshold=0.1)
     # clsts_tpl = single_solve(df,useModel='weighted_konig',minRows = 5, minCols =5, drawGraph = True,printStat=True)
 
     # clsts_tpl = single_solve(df,useModel='exact', drawGraph = True,printStat=True)
 
     # clsts_tpl = hybrid_single_solve(df,minRows = 5, minCols =5, drawGraph = True,printStat=True)
 
-    clsts = [c[1] for c in clsts_tpl if c[1][0] and c[1][1]]
-    print()
-    print(f'Found {len(clsts)} cluster(s) satisfied the threshold of significance.')
-    for i,clst in enumerate(clsts):
-        print(f'Cluster {i}')
-        print('Dimension:', f'{len(clst[0])}x{len(clst[1])}')
-        print('Quality:', evaluate(df,clst[0]))
-    graph_result(df,clsts)
+    # clsts = [c[1] for c in clsts_tpl if c[1][0] and c[1][1]]
+    # print()
+    # print(f'Found {len(clsts)} cluster(s) satisfied the threshold of significance.')
+    # for i,clst in enumerate(clsts):
+    #     print(f'Cluster {i}')
+    #     print('Dimension:', f'{len(clst[0])}x{len(clst[1])}')
+    #     print('Quality:', evaluate(df,clst[0]))
+    # graph_result(df,clsts)
 
-    clsts = cplt_hierarchical_clstering(df, clsts_tpl, estimation=10)
-    graph_result(df,clsts)
+    # clsts = cplt_hierarchical_clstering(df, clsts_tpl, estimation=10)
+    # graph_result(df,clsts)
 
     plt.show()

@@ -459,7 +459,7 @@ if __name__ == '__main__':
     parser.add_argument('--minCols', type=int, default=10, help='Cluster minimum cols')
     parser.add_argument('--errThreshold', type=float, default=0.025, help='Error rate to tolerate')
     parser.add_argument('--preSolve',default = False, help='Presolving, can improve the quality of clusters')
-    parser.add_argument('--merge',default = True, help='Clusters merging')      
+    parser.add_argument('--merge',default = True, help='Clusters merging')  
 
     args = parser.parse_args()
 
